@@ -4,7 +4,6 @@
 
 A combined Streamlit dashboard that merges two analytical frameworks into one unified signal engine: *where* price is likely to react (gravity lines) and *when* it's about to move (volatility explosion detection).
 
-> Built by [tubakhxn](https://github.com/tubakhxn) · Combined & extended with Claude
 
 ---
 
