@@ -1,6 +1,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #  GRAVITY EXPLOSION LAB  ⚡  v2.0
 #  Volatility Explosion Tracker × Crypto Gravity Lines
+#  Creator: tubakhxn  |  Enhanced UI by: Claude
 # ─────────────────────────────────────────────────────────────────────────────
 
 import warnings
@@ -407,7 +408,7 @@ def vol_histogram(df):
     lo.update(dict(height=175,showlegend=False,
         title=dict(text='VOL DISTRIBUTION',font=dict(family='IBM Plex Mono',size=9,color=C['muted']),x=.01),
         yaxis={**BL['yaxis'],'side':'left','showgrid':False,'showticklabels':False},
-        xaxis=dict(**BL['xaxis'],showgrid=False,tickformat='.3f')))
+        xaxis={**BL['xaxis'],'showgrid':False,'tickformat':'.3f'}))
     fig.update_layout(**lo)
     return fig
 
@@ -425,8 +426,8 @@ def levels_chart(df,levels,touches,price_now):
     lo2=BL.copy()
     lo2.update(dict(height=max(200,len(levels)*38+40),showlegend=False,
         title=dict(text='DISTANCE FROM PRICE (%)',font=dict(family='IBM Plex Mono',size=9,color=C['muted']),x=.0),
-        xaxis=dict(**BL['xaxis'],ticksuffix='%',zeroline=False),
-        yaxis=dict(**BL['yaxis'],side='left',showgrid=False),bargap=.3))
+        xaxis={**BL['xaxis'],'ticksuffix':'%','zeroline':False},
+        yaxis={**BL['yaxis'],'side':'left','showgrid':False},bargap=.3))
     fig.update_layout(**lo2)
     return fig
 
