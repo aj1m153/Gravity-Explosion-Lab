@@ -1,7 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #  GRAVITY EXPLOSION LAB  ⚡  v2.0
 #  Volatility Explosion Tracker × Crypto Gravity Lines
-#  Creator: tubakhxn  |  Enhanced UI by: Claude
 # ─────────────────────────────────────────────────────────────────────────────
 
 import warnings
