@@ -1,7 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
 #  GRAVITY EXPLOSION LAB  ⚡
 #  Volatility Explosion Tracker × Crypto Gravity Lines
-#  Creator: tubakhxn  |  Combined by: Claude
 # ─────────────────────────────────────────────────────────────────────────────
 
 import warnings
@@ -213,7 +212,7 @@ def load_data(ticker: str, period: str, interval: str) -> pd.DataFrame:
     try:
         raw = yf.download(ticker, period=period, interval=interval,
                           progress=False, auto_adjust=True)
-        if raw.empty or len(raw) < 30:
+        if raw.empty or len(raw) < 60:
             raise ValueError("Insufficient data from yfinance")
         # Flatten MultiIndex columns if present
         raw.columns = [c[0] if isinstance(c, tuple) else c for c in raw.columns]
@@ -359,18 +358,15 @@ def compute_volatility(df: pd.DataFrame, window: int = 20) -> pd.DataFrame:
 def get_compression_zones(df: pd.DataFrame, min_bars: int = 3) -> list[tuple]:
     """Return list of (start_ts, end_ts) for each compression run."""
     flags = df['is_compressed'].fillna(False)
-    zones, in_zone, start, start_i = [], False, None, 0
+    zones, in_zone, start = [], False, None
     idx_list = list(df.index)
     for i, (ts, val) in enumerate(flags.items()):
         if val and not in_zone:
-            in_zone, start, start_i = True, ts, i
+            in_zone, start = True, ts
         elif not val and in_zone:
             in_zone = False
-            if (i - start_i) >= min_bars:
+            if (i - idx_list.index(start)) >= min_bars:
                 zones.append((start, ts))
-    # Capture an open compression zone at the end of the data
-    if in_zone and (len(idx_list) - 1 - start_i) >= min_bars:
-        zones.append((start, idx_list[-1]))
     return zones
 
 
@@ -658,7 +654,7 @@ def vol_histogram(df: pd.DataFrame) -> go.Figure:
                    title=dict(text='VOL DISTRIBUTION',
                                font=dict(family='Share Tech Mono', size=9,
                                          color=C['muted']), x=0.01),
-                   yaxis=dict(**BASE_LAYOUT['yaxis'], side='left')))
+                   yaxis={**BASE_LAYOUT['yaxis'], 'side': 'left'}))
     fig.update_layout(**lo)
     return fig
 
@@ -687,7 +683,7 @@ with st.sidebar:
         period   = st.selectbox('Period',   ['7d','14d','30d','60d','90d'],
                                 index=2, label_visibility='collapsed')
     with c2:
-        interval = st.selectbox('Interval', ['1h','4h','1d'],
+        interval = st.selectbox('Interval', ['1h','2h','4h','1d'],
                                 label_visibility='collapsed')
 
     st.markdown('<div class="section-hdr">// GRAVITY PARAMS</div>', unsafe_allow_html=True)
